@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Flower Facts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #factDisplay {
+            margin: 20px 0;
+            font-size: 18px;
+            color: #555;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Random Flower Fact</h1>
+        <p id="factDisplay">Click the button to get a flower fact!</p>
+        <button id="factButton">Get a Fact</button>
+    </div>
+    <script>
+        const flowerFacts = [
+            "There are over 400,000 species of flowering plants in the world.",
+            "Flowers are the reproductive structures of angiosperms, which are plants that produce seeds enclosed within a fruit.",
+            "The largest flower in the world is the Rafflesia arnoldii, which can grow up to 3 feet in diameter.",
+            "Some flowers, like the sunflower, can track the sun's movement across the sky, a phenomenon known as heliotropism.",
+            "Flowers can have various meanings; for example, red roses symbolize love, while white lilies symbolize purity.",
+            "Many flowers are edible and can be used in cooking, such as nasturtiums, violets, and dandelions.",
+            "Bees are attracted to flowers primarily for their nectar, which they use to make honey.",
+            "The process of pollination can occur through various agents, including wind, water, and animals.",
+            "Some flowers, like the corpse flower (Amorphophallus titanum), emit a foul odor to attract pollinators such as carrion beetles.",
+            "Flowers can bloom in various seasons, with some species blooming in spring, summer, fall, or even winter."
+        ];
+
+        let attempts = 0;
+
+        const factDisplay = document.getElementById('factDisplay');
+        const factButton = document.getElementById('factButton');
+
+        factButton.addEventListener('click', () => {
+            if (attempts < 3) {
+                attempts++;
+                factDisplay.textContent = "You need to get closer to the button!";
+            } else {
+                const randomIndex = Math.floor(Math.random() * flowerFacts.length);
+                factDisplay.textContent = flowerFacts[randomIndex];
+                attempts = 0; // Reset attempts after displaying a fact
+            }
+        });
+
+        // Move button when user approaches
+        document.addEventListener('mousemove', (event) => {
+            const buttonRect = factButton.getBoundingClientRect();
+            const buttonX = buttonRect.left + buttonRect.width / 2;
+            const buttonY = buttonRect.top + buttonRect.height / 2;
+
+            const distance = Math.sqrt(Math.pow(event.clientX - buttonX, 2) + Math.pow(event.clientY - buttonY, 2));
+
+            if (distance < 100 && attempts >= 3) {
+                const randomX = Math.random() * (window.innerWidth - buttonRect.width);
+                const randomY = Math.random() * (window.innerHeight - buttonRect.height);
+                factButton.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
